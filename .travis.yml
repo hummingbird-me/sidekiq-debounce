@@ -1,0 +1,10 @@
+language: ruby
+rvm:
+ - 1.9.3
+ - 2.0.0
+ - 2.1.2
+ - jruby-19mode
+script: bundle exec rake test
+addons:
+ code_climate:
+  repo_token: b11e6d8ed83dd2e01424b088c469e2cef525a89e887414f81e6ee7f36b937a1d
