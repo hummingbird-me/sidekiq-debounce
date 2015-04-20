@@ -1,4 +1,10 @@
-# Sidekiq::Debounce
+Sidekiq::Debounce
+=================
+ [![Travis CI](http://img.shields.io/travis/NuckChorris/sidekiq-debounce/master.svg)](https://travis-ci.org/NuckChorris/sidekiq-debounce)
+ [![CodeClimate](http://img.shields.io/codeclimate/github/NuckChorris/sidekiq-debounce.svg)](https://codeclimate.com/github/NuckChorris/sidekiq-debounce)
+ [![Coverage](http://img.shields.io/codeclimate/coverage/github/NuckChorris/sidekiq-debounce.svg)](https://codeclimate.com/github/NuckChorris/sidekiq-debounce)
+ [![RubyGems](http://img.shields.io/gem/v/sidekiq-debounce.svg)](https://rubygems.org/gems/sidekiq-debounce)
+ [![Gittip](http://img.shields.io/gittip/Nuck.svg)](https://www.gittip.com/Nuck/)
 
 Sidekiq::Debounce is a client-side Sidekiq middleware which provides a way to
 easily rate-limit creation of Sidekiq jobs.
