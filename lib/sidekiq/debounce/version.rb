@@ -1,5 +1,5 @@
 module Sidekiq
-  module Debounce
+  class Debounce
     VERSION = '0.0.1'
   end
 end

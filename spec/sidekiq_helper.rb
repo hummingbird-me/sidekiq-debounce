@@ -1,6 +1,7 @@
 require 'sidekiq/testing'
 require 'mock_redis'
 
+# Disable Sidekiq's testing mocks and use MockRedis instead
 Sidekiq::Testing.disable!
 
 Sidekiq.configure_server do |config|
