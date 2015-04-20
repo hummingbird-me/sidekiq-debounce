@@ -1,4 +1,4 @@
-require "sidekiq/debounce/version"
+require 'sidekiq/debounce/version'
 
 module Sidekiq
   module Debounce
