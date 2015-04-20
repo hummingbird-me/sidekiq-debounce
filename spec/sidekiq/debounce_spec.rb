@@ -1,7 +1,6 @@
 require 'spec_helper'
 require 'sidekiq/debounce'
 require 'sidekiq'
-require 'pry'
 
 class DebouncedWorker
   include Sidekiq::Worker
@@ -17,14 +16,13 @@ describe Sidekiq::Debounce do
   end
 
   after do
-    Sidekiq.redis_pool.with { |redis| redis.flushdb }
+    Sidekiq.redis_pool.with(&:flushdb)
   end
 
   let(:set) { Sidekiq::ScheduledSet.new }
   let(:sorted_entry) { Sidekiq::SortedEntry.new(set, 0, 'jid' => '54321') }
 
   it 'queues a job normally at first' do
-
     DebouncedWorker.perform_in(60, 'foo', 'bar')
     set.size.must_equal 1, 'set.size must be 1'
   end
