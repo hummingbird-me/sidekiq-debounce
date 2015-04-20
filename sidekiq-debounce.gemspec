@@ -17,7 +17,6 @@ calls. If you make another job with the same arguments before the specified
 time has elapsed, the timer is reset and the entire period must pass again
 before the job is executed.
 DESC
-
   spec.homepage      = 'https://github.com/NuckChorris/sidekiq-debounce'
   spec.license       = 'MIT'
 
@@ -26,8 +25,9 @@ DESC
   spec.test_files    = spec.files.grep(%r{^spec/})
   spec.require_paths = ['lib']
 
-  gem.add_dependency 'sidekiq', '>= 3.0'
-  gem.add_development_dependency 'rake', '~> 10.0'
-  gem.add_development_dependency 'bundler', '~> 1.7'
-  gem.add_development_dependency 'timecop'
+  spec.add_dependency 'sidekiq', '>= 3.0'
+  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'bundler', '~> 1.7'
+  spec.add_development_dependency 'mock_redis'
+  spec.add_development_dependency 'mocha'
 end
