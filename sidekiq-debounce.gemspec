@@ -30,4 +30,5 @@ DESC
   spec.add_development_dependency 'bundler', '~> 1.7'
   spec.add_development_dependency 'mock_redis'
   spec.add_development_dependency 'mocha'
+  spec.add_development_dependency 'codeclimate-test-reporter'
 end
