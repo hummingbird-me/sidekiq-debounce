@@ -4,7 +4,7 @@ require 'sidekiq/api'
 module Sidekiq
   class Debounce
     def call(worker, msg, _queue, redis_pool)
-      @worker = worker
+      @worker = worker.is_a?(String) ? worker.constantize : worker
       @msg = msg
 
       return yield unless debounce?
