@@ -3,6 +3,9 @@ rvm:
  - 2.0.0
  - 2.1.2
  - jruby-9.0.0.0.pre1
+gemfile:
+- gemfiles/Gemfile.sidekiq-3.1.0
+- gemfiles/Gemfile.sidekiq-3.3.4
 script: bundle exec rake test
 addons:
  code_climate:
