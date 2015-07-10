@@ -26,7 +26,7 @@ module Sidekiq
     private
 
     def store_expiry(conn, jid, time)
-      conn.set(debounce_key, jid)
+      conn.set(debounce_key, jid['jid'])
       conn.expireat(debounce_key, time.to_i)
     end
 
@@ -41,6 +41,8 @@ module Sidekiq
 
     def reschedule(jid, at)
       job = scheduled_set.find_job(jid)
+      return jid if job.nil?
+      
       job.reschedule(at)
       jid
     end
