@@ -25,7 +25,8 @@ module Sidekiq
 
     private
 
-    def store_expiry(conn, jid, time)
+    def store_expiry(conn, job, time)
+      jid = job.respond_to?(:has_key?) && job.key?('jid') ? job['jid'] : job
       conn.set(debounce_key, jid)
       conn.expireat(debounce_key, time.to_i)
     end
