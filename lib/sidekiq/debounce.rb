@@ -42,7 +42,7 @@ module Sidekiq
 
     def reschedule(jid, at)
       job = scheduled_set.find_job(jid)
-      job.reschedule(at)
+      job.reschedule(at) unless job.nil?
       jid
     end
 
