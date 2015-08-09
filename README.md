@@ -11,7 +11,7 @@ easily rate-limit creation of Sidekiq jobs.
 
 When you create a job via `#perform_in` on a Worker with debounce enabled,
 Sidekiq::Debounce will prevent other jobs with the same arguments from being
-created until the job has run.  Every time you create another job with those
+created until the time has passed. Every time you create another job with those
 same arguments prior to the job being run, the timer is reset and the entire
 period must pass again before the job is executed.
 
