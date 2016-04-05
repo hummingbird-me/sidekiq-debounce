@@ -7,6 +7,7 @@ rvm:
 gemfile:
 - gemfiles/Gemfile.sidekiq-3.1.0
 - gemfiles/Gemfile.sidekiq-3.3.4
+- gemfiles/Gemfile.sidekiq-4.0.2
 script: bundle exec rake test
 addons:
  code_climate:
