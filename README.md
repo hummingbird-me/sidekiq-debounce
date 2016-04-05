@@ -1,10 +1,9 @@
 Sidekiq::Debounce
 =================
- [![Travis CI](http://img.shields.io/travis/NuckChorris/sidekiq-debounce/master.svg)](https://travis-ci.org/NuckChorris/sidekiq-debounce)
- [![CodeClimate](http://img.shields.io/codeclimate/github/NuckChorris/sidekiq-debounce.svg)](https://codeclimate.com/github/NuckChorris/sidekiq-debounce)
- [![Coverage](http://img.shields.io/codeclimate/coverage/github/NuckChorris/sidekiq-debounce.svg)](https://codeclimate.com/github/NuckChorris/sidekiq-debounce)
+ [![Travis CI](http://img.shields.io/travis/hummingbird-me/sidekiq-debounce/master.svg)](https://travis-ci.org/NuckChorris/sidekiq-debounce)
+ [![CodeClimate](http://img.shields.io/codeclimate/github/hummingbird-me/sidekiq-debounce.svg)](https://codeclimate.com/github/NuckChorris/sidekiq-debounce)
+ [![Coverage](http://img.shields.io/codeclimate/coverage/github/hummingbird-me/sidekiq-debounce.svg)](https://codeclimate.com/github/NuckChorris/sidekiq-debounce)
  [![RubyGems](http://img.shields.io/gem/v/sidekiq-debounce.svg)](https://rubygems.org/gems/sidekiq-debounce)
- [![Gittip](http://img.shields.io/gittip/Nuck.svg)](https://www.gittip.com/Nuck/)
 
 Sidekiq::Debounce is a client-side Sidekiq middleware which provides a way to
 easily rate-limit creation of Sidekiq jobs.
@@ -40,7 +39,7 @@ Use `#perform_in` instead of `#perform_async` to set the timeframe.
 
 ## Contributing
 
-1. Fork it ( https://github.com/nuckchorris/sidekiq-debounce/fork )
+1. Fork it ( https://github.com/hummingbird-me/sidekiq-debounce/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
