@@ -31,4 +31,5 @@ DESC
   spec.add_development_dependency 'mock_redis'
   spec.add_development_dependency 'mocha'
   spec.add_development_dependency 'codeclimate-test-reporter'
+  spec.add_development_dependency 'minitest'
 end
