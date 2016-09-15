@@ -16,7 +16,7 @@ describe Sidekiq::Debounce do
   end
 
   after do
-    Sidekiq.redis_pool.with(&:flushdb)
+    Sidekiq.redis(&:flushdb)
   end
 
   let(:set) { Sidekiq::ScheduledSet.new }
