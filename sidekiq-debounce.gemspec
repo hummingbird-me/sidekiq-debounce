@@ -25,7 +25,7 @@ DESC
   spec.test_files    = spec.files.grep(%r{^spec/})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'sidekiq', '>= 3.1.0'
+  spec.add_dependency 'sidekiq', '>= 2.17'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'bundler', '~> 1.6'
   spec.add_development_dependency 'mock_redis'
