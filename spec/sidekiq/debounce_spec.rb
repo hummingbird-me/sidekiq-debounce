@@ -20,7 +20,7 @@ describe Sidekiq::Debounce do
   end
 
   let(:set) { Sidekiq::ScheduledSet.new }
-  let(:sorted_entry) { Sidekiq::SortedEntry.new(set, 0, 'jid' => '54321') }
+  let(:sorted_entry) { Sidekiq::SortedEntry.new(set, 0, {jid: '54321'}.to_json) }
 
   it 'queues a job normally at first' do
     DebouncedWorker.perform_in(60, 'foo', 'bar')
