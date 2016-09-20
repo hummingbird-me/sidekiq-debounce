@@ -17,7 +17,7 @@ calls. If you make another job with the same arguments before the specified
 time has elapsed, the timer is reset and the entire period must pass again
 before the job is executed.
 DESC
-  spec.homepage      = 'https://github.com/NuckChorris/sidekiq-debounce'
+  spec.homepage      = 'https://github.com/hummingbird-me/sidekiq-debounce'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
