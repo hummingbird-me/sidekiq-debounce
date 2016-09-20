@@ -16,11 +16,11 @@ describe Sidekiq::Debounce do
   end
 
   after do
-    Sidekiq.redis_pool.with(&:flushdb)
+    Sidekiq.redis(&:flushdb)
   end
 
   let(:set) { Sidekiq::ScheduledSet.new }
-  let(:sorted_entry) { Sidekiq::SortedEntry.new(set, 0, 'jid' => '54321') }
+  let(:sorted_entry) { Sidekiq::SortedEntry.new(set, 0, {jid: '54321'}.to_json) }
 
   it 'queues a job normally at first' do
     DebouncedWorker.perform_in(60, 'foo', 'bar')

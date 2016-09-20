@@ -3,13 +3,13 @@ require 'sidekiq/api'
 
 module Sidekiq
   class Debounce
-    def call(worker, msg, _queue, redis_pool)
+    def call(worker, msg, _queue, redis_pool = nil)
       @worker = worker.is_a?(String) ? worker.constantize : worker
       @msg = msg
 
       return yield unless debounce?
 
-      redis_pool.with do |conn|
+      block = Proc.new do |conn|
         # Get JID of the already-scheduled job, if there is one
         scheduled_jid = conn.get(debounce_key)
 
@@ -20,6 +20,12 @@ module Sidekiq
         store_expiry(conn, jid, @msg['at'])
         return false if scheduled_jid
         jid
+      end
+
+      if redis_pool
+        redis_pool.with(&block)
+      else
+        Sidekiq.redis(&block)
       end
     end
 
