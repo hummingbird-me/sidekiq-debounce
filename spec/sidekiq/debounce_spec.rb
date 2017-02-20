@@ -11,16 +11,11 @@ class DebouncedWorker
 end
 
 describe Sidekiq::Debounce do
-  before do
-    stub_scheduled_set
-  end
-
   after do
     Sidekiq.redis(&:flushdb)
   end
 
   let(:set) { Sidekiq::ScheduledSet.new }
-  let(:sorted_entry) { Sidekiq::SortedEntry.new(set, 0, {jid: '54321'}.to_json) }
 
   it 'queues a job normally at first' do
     DebouncedWorker.perform_in(60, 'foo', 'bar')
@@ -28,10 +23,19 @@ describe Sidekiq::Debounce do
   end
 
   it 'ignores repeat jobs within the debounce time and reschedules' do
-    sorted_entry.expects(:reschedule)
+    now = Time.new(2011, 11, 11)
+    job_id = nil
 
-    DebouncedWorker.perform_in(60, 'foo', 'bar')
-    DebouncedWorker.perform_in(60, 'foo', 'bar')
+    Timecop.freeze(now) do
+      job_id = DebouncedWorker.perform_in(120, 'foo', 'bar')
+    end
+
+    Timecop.freeze(now + 60) do
+      DebouncedWorker.perform_in(120, 'foo', 'bar')
+    end
+
+    scheduled_seconds_away = (set.find_job(job_id).at - now).to_i
+    scheduled_seconds_away.must_equal 180, 'job must be rescheduled'
     set.size.must_equal 1, 'set.size must be 1'
   end
 
@@ -44,10 +48,5 @@ describe Sidekiq::Debounce do
   it 'creates the job immediately when given an instant job' do
     DebouncedWorker.perform_async('foo', 'bar')
     set.size.must_equal 0, 'set.size must be 0'
-  end
-
-  def stub_scheduled_set
-    set.stubs(:find_job).returns(sorted_entry)
-    Sidekiq::Debounce.any_instance.stubs(:scheduled_set).returns(set)
   end
 end
