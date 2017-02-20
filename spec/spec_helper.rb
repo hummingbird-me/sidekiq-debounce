@@ -1,7 +1,10 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'minitest/spec'
 require 'minitest/autorun'
 require 'mocha/mini_test'
 require 'sidekiq_helper'
-require 'codeclimate-test-reporter'
+require 'timecop'
 
-CodeClimate::TestReporter.start
+Timecop.safe_mode = true

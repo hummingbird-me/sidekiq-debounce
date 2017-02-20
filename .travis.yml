@@ -13,3 +13,5 @@ script: bundle exec rake test
 addons:
  code_climate:
   repo_token: b11e6d8ed83dd2e01424b088c469e2cef525a89e887414f81e6ee7f36b937a1d
+after_success:
+ - bundle exec codeclimate-test-reporter

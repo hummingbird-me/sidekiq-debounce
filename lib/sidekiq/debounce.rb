@@ -48,12 +48,29 @@ module Sidekiq
 
     def reschedule(jid, at)
       job = scheduled_set.find_job(jid)
-      job.reschedule(at) unless job.nil?
+      return if job.nil?
+
+      at = if at && max_seconds
+        Time.at [(job.created_at + max_seconds).to_i, at.to_i].min
+      else
+        at
+      end
+
+      job.reschedule(at) if job.at != at
       jid
     end
 
+    def debounce_options_hash
+      opt = @msg['at'] && @worker.get_sidekiq_options['debounce']
+      opt.is_a?(Hash) ? opt : Hash.new
+    end
+
     def debounce?
-      (@msg['at'] && @worker.get_sidekiq_options['debounce']) || false
+      !debounce_options_hash.nil?
+    end
+
+    def max_seconds
+      debounce_options_hash && debounce_options_hash.fetch(:max_seconds) { nil }
     end
   end
 end
