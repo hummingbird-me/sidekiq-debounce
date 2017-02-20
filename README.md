@@ -1,6 +1,6 @@
 Sidekiq::Debounce
 =================
- [![Travis CI](http://img.shields.io/travis/hummingbird-me/sidekiq-debounce/master.svg)](https://travis-ci.org/NuckChorris/sidekiq-debounce)
+ [![Travis CI](http://img.shields.io/travis/hummingbird-me/sidekiq-debounce/master.svg)](https://travis-ci.org/hummingbird-me/sidekiq-debounce)
  [![CodeClimate](http://img.shields.io/codeclimate/github/hummingbird-me/sidekiq-debounce.svg)](https://codeclimate.com/github/NuckChorris/sidekiq-debounce)
  [![Coverage](http://img.shields.io/codeclimate/coverage/github/hummingbird-me/sidekiq-debounce.svg)](https://codeclimate.com/github/NuckChorris/sidekiq-debounce)
  [![RubyGems](http://img.shields.io/gem/v/sidekiq-debounce.svg)](https://rubygems.org/gems/sidekiq-debounce)
