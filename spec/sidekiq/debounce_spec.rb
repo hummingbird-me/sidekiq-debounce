@@ -10,6 +10,14 @@ class DebouncedWorker
   def perform(_a, _b); end
 end
 
+class BoundedDebouncedWorker
+  include Sidekiq::Worker
+
+  sidekiq_options debounce: {max_seconds:  140}
+
+  def perform(_a, _b); end
+end
+
 describe Sidekiq::Debounce do
   after do
     Sidekiq.redis(&:flushdb)
@@ -48,5 +56,21 @@ describe Sidekiq::Debounce do
   it 'creates the job immediately when given an instant job' do
     DebouncedWorker.perform_async('foo', 'bar')
     set.size.must_equal 0, 'set.size must be 0'
+  end
+
+  it 'does not debounce beyond a user-specified time window' do
+    now = Time.new(2011, 11, 11)
+    job_id = nil
+
+    Timecop.freeze(now) do
+      job_id = BoundedDebouncedWorker.perform_in(120, 'foo', 'bar')
+    end
+
+    Timecop.freeze(now + 60) do
+      BoundedDebouncedWorker.perform_in(120, 'foo', 'bar')
+    end
+
+    scheduled_seconds_away = (set.find_job(job_id).at - now).to_i
+    scheduled_seconds_away.must_equal 140, 'job must not debounce beyond 140s'
   end
 end
