@@ -1,9 +1,9 @@
-Sidekiq::Debounce
-=================
- [![Travis CI](http://img.shields.io/travis/hummingbird-me/sidekiq-debounce/master.svg)](https://travis-ci.org/hummingbird-me/sidekiq-debounce)
- [![CodeClimate](http://img.shields.io/codeclimate/github/hummingbird-me/sidekiq-debounce.svg)](https://codeclimate.com/github/NuckChorris/sidekiq-debounce)
- [![Coverage](http://img.shields.io/codeclimate/coverage/github/hummingbird-me/sidekiq-debounce.svg)](https://codeclimate.com/github/NuckChorris/sidekiq-debounce)
- [![RubyGems](http://img.shields.io/gem/v/sidekiq-debounce.svg)](https://rubygems.org/gems/sidekiq-debounce)
+# Sidekiq::Debounce
+
+[![Travis CI](http://img.shields.io/travis/hummingbird-me/sidekiq-debounce/master.svg)](https://travis-ci.org/hummingbird-me/sidekiq-debounce)
+[![CodeClimate](http://img.shields.io/codeclimate/github/hummingbird-me/sidekiq-debounce.svg)](https://codeclimate.com/github/NuckChorris/sidekiq-debounce)
+[![Coverage](http://img.shields.io/codeclimate/coverage/github/hummingbird-me/sidekiq-debounce.svg)](https://codeclimate.com/github/NuckChorris/sidekiq-debounce)
+[![RubyGems](http://img.shields.io/gem/v/sidekiq-debounce.svg)](https://rubygems.org/gems/sidekiq-debounce)
 
 Sidekiq::Debounce is a client-side Sidekiq middleware which provides a way to
 easily rate-limit creation of Sidekiq jobs.
@@ -36,6 +36,33 @@ Add `Sidekiq::Debounce` to your client middleware chain, and then add
 `sidekiq_options debounce: true` to the worker you wish to debounce.
 
 Use `#perform_in` instead of `#perform_async` to set the timeframe.
+
+```rb
+# rails example
+# config/initializers/sidekiq.rb
+require "sidekiq/debounce"
+Sidekiq.configure_client do |config|
+  config.client_middleware do |chain|
+    chain.add Sidekiq::Debounce
+  end
+end
+```
+
+```rb
+class YourWorker
+  include Sidekiq::Worker
+  sidekiq_options debounce: true # add this option
+
+  def perform(id)
+    ...
+    ...
+  end
+end
+
+# YourWorker.perform_in 1.day, 42
+# YourWorker.perform_in 2.days, 42
+# will create only one schedule with 42 as a parameter, and its schedule datetime will be 2 days later (not the initial 1 day)
+```
 
 ## Contributing
 
