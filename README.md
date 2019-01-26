@@ -60,8 +60,8 @@ class YourWorker
 end
 
 # YourWorker.perform_in 1.day, 42
-# YourWorker.perform_in 1.day, 42
-# will create only one schedule with 42 as a parameter
+# YourWorker.perform_in 2.days, 42
+# will create only one schedule with 42 as a parameter, and its schedule datetime will be 2 days later (not the initial 1 day)
 ```
 
 ## Contributing
