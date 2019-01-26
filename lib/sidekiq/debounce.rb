@@ -11,15 +11,19 @@ module Sidekiq
 
       block = Proc.new do |conn|
         # Get JID of the already-scheduled job, if there is one
-        scheduled_jid = conn.get(debounce_key)
-
-        # Reschedule the old job to when this new job is scheduled for
-        # Or yield if there isn't one scheduled yet
-        jid = scheduled_jid ? reschedule(scheduled_jid, @msg['at']) : yield
-
-        store_expiry(conn, jid, @msg['at'])
-        return false if scheduled_jid
-        jid
+        current_scheduled_job = scheduled_set.find_job(conn.get(debounce_key))
+        if current_scheduled_job
+          # Reschedule the old job to when this new job is scheduled for
+          current_scheduled_job.reschedule(@msg['at'])
+          store_expiry(conn, current_scheduled_job.jid, @msg['at'])
+          false # gracefully ignore newly created scheduled job
+        else
+          # Or yield if there isn't one scheduled yet
+          conn.del(debounce_key) # just in case the scheduled job was deleted before the expiry
+          yield.tap do |job_hash|
+            store_expiry(conn, job_hash["jid"], @msg['at'])
+          end
+        end
       end
 
       if redis_pool
@@ -31,8 +35,7 @@ module Sidekiq
 
     private
 
-    def store_expiry(conn, job, time)
-      jid = job.respond_to?(:has_key?) && job.key?('jid') ? job['jid'] : job
+    def store_expiry(conn, jid, time)
       conn.set(debounce_key, jid)
       conn.expireat(debounce_key, time.to_i)
     end
@@ -44,12 +47,6 @@ module Sidekiq
 
     def scheduled_set
       @scheduled_set ||= Sidekiq::ScheduledSet.new
-    end
-
-    def reschedule(jid, at)
-      job = scheduled_set.find_job(jid)
-      job.reschedule(at) unless job.nil?
-      jid
     end
 
     def debounce?

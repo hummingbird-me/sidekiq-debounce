@@ -11,10 +11,6 @@ class DebouncedWorker
 end
 
 describe Sidekiq::Debounce do
-  before do
-    stub_scheduled_set
-  end
-
   after do
     Sidekiq.redis(&:flushdb)
   end
@@ -27,12 +23,22 @@ describe Sidekiq::Debounce do
     set.size.must_equal 1, 'set.size must be 1'
   end
 
-  it 'ignores repeat jobs within the debounce time and reschedules' do
-    sorted_entry.expects(:reschedule)
-
-    DebouncedWorker.perform_in(60, 'foo', 'bar')
-    DebouncedWorker.perform_in(60, 'foo', 'bar')
+  it 'ignores repeat jobs within the debounce time' do
+    DebouncedWorker.perform_in(60, 'foo', 'bar').wont_be_nil
+    DebouncedWorker.perform_in(60, 'foo', 'bar').must_be_nil
     set.size.must_equal 1, 'set.size must be 1'
+  end
+
+  it "creates another job if the job is manually deleted within the expiry" do
+    DebouncedWorker.perform_in(60, 'foo', 'bar').wont_be_nil
+    set.each{|job| job.delete if job.klass == "DebouncedWorker" }
+    DebouncedWorker.perform_in(60, 'foo', 'bar').wont_be_nil
+  end
+
+  it "reschedules" do
+    stub_scheduled_set
+    sorted_entry.expects(:reschedule)
+    DebouncedWorker.perform_in(60, 'foo', 'bar')
   end
 
   it 'debounces jobs based on their arguments' do
