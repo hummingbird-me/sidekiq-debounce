@@ -33,4 +33,5 @@ DESC
   spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'codeclimate-test-reporter', '~> 1.0.0'
   spec.add_development_dependency 'minitest'
+  spec.add_development_dependency 'activesupport'
 end
